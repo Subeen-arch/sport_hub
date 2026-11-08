@@ -1,0 +1,1 @@
+export const sortOptions = [ ['-id', 'Newest first'], ['id', 'Oldest first'], ['price', 'Price: low to high'], ['-price', 'Price: high to low'], ['name', 'Name: A–Z'], ['-name', 'Name: Z–A'], ['-discount_percent', 'Biggest discount'] ]

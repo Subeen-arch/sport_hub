@@ -1,0 +1,55 @@
+name: sporthub-next
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sporthub_next
+      POSTGRES_USER: sporthub_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a new PostgreSQL password}
+    volumes:
+      - sporthub_next_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U sporthub_app -d sporthub_next]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    build: ../../backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set a random Django secret}
+      DJANGO_DEBUG: 'False'
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      POSTGRES_DB: sporthub_next
+      POSTGRES_USER: sporthub_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a new PostgreSQL password}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: '5432'
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-http://localhost:8080}
+      DJANGO_SESSION_COOKIE_SECURE: ${DJANGO_SECURE_COOKIES:-True}
+      DJANGO_CSRF_COOKIE_SECURE: ${DJANGO_SECURE_COOKIES:-True}
+      DJANGO_SECURE_SSL_REDIRECT: ${DJANGO_SECURE_SSL_REDIRECT:-True}
+      KHALTI_ENV: ${KHALTI_ENV:-sandbox}
+      KHALTI_SECRET_KEY: ${KHALTI_SECRET_KEY:-}
+    volumes:
+      - sporthub_next_media:/app/media
+      - sporthub_next_static:/app/staticfiles
+  frontend:
+    build: ../../frontend
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    depends_on:
+      - backend
+    volumes:
+      - sporthub_next_media:/srv/media:ro
+      - sporthub_next_static:/srv/static:ro
+volumes:
+  sporthub_next_postgres:
+  sporthub_next_media:
+  sporthub_next_static:

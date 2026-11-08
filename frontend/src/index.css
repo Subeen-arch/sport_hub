@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f8faf9;
+  --color-foreground: #142b24;
+  --color-card: #ffffff;
+  --color-card-foreground: #142b24;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #142b24;
+  --color-primary: #087b45;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #eaf3ed;
+  --color-secondary-foreground: #142b24;
+  --color-muted: #eff3f1;
+  --color-muted-foreground: #56665e;
+  --color-accent: #e1eee6;
+  --color-accent-foreground: #142b24;
+  --color-destructive: #b42318;
+  --color-border: #dce4df;
+  --color-input: #c8d5cd;
+  --color-ring: #087b45;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground antialiased; font-family: "Segoe UI", Arial, sans-serif; }
+  button, select { @apply cursor-pointer; }
+  a, button, select { @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring; }
+}
+
+@layer components {
+  .page-panel { @apply rounded-xl border bg-card p-6 shadow-sm sm:p-8; }
+  .page-title { @apply mb-3 text-3xl font-bold tracking-tight; }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-widest text-primary; }
+  .filter-label { @apply grid gap-2 text-sm font-medium; }
+  .filter-label select { @apply h-9 w-full min-w-0 rounded-md border border-input bg-background px-3 text-sm; }
+}

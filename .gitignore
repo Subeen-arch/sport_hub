@@ -1,0 +1,23 @@
+# Local environment / secrets
+.env
+
+# Runtime logs
+*.log
+
+# Independent React / Django application
+.venv/
+.tools/
+.runtime/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+dist/
+backend/.env
+.env.production
+project-support/deployment/.env.production
+backend/media/
+backend/staticfiles/
+frontend/test-results/
+frontend/playwright-report/
+*.tsbuildinfo
